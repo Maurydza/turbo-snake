@@ -1,0 +1,104 @@
+﻿namespace rocket_propelled_grenade
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.Title = "Snake";
+
+            FunkyStuff.BasicLoad(3, 50, "Ładowanie");
+            FunkyStuff.FlashColors(10, 50, "ZAŁADOWANO", true);
+
+            Random random = new();
+            int score = 0;
+
+            Map map = new(20, 20, "--");
+            Player snake = new("Snake", 140, 2, "[]", 1, 0, true);
+            Fruit fruit = new("db");
+            
+            map.CreateEmpty();
+            snake.Create(map.SizeX / 2, map.SizeY / 2);
+            fruit.Create(random.Next(map.SizeX), random.Next(map.SizeY));
+
+            map.RenderFruit(fruit);
+
+
+            while (snake.IsAlive)
+            {   
+                if (Console.KeyAvailable)
+                {
+                    switch (Console.ReadKey().Key)
+                    {
+                        case ConsoleKey.W:
+                            if (snake.DirY == 0)
+                            {
+                                snake.DirX = 0;
+                                snake.DirY = -1;
+                            }
+                            break;
+
+                        case ConsoleKey.S:
+                            if (snake.DirY == 0)
+                            {
+                                snake.DirX = 0;
+                                snake.DirY = 1;
+                            }
+                            break;
+
+                        case ConsoleKey.A:
+                            if (snake.DirX == 0)
+                            {
+                                snake.DirX = -1;
+                                snake.DirY = 0;
+                            }
+                            break;
+
+                        case ConsoleKey.D:
+                            if (snake.DirX == 0)
+                            {
+                                snake.DirX = 1;
+                                snake.DirY = 0;
+                            }
+                            break;
+
+                        default:
+                            break;
+                    }
+                }
+
+                if (snake.Blocks[0].X == fruit.Drawable.X && snake.Blocks[0].Y == fruit.Drawable.Y)
+                {
+                    snake.Lengthen();
+                    fruit.Move(random.Next(map.SizeX), random.Next(map.SizeY));
+                    score++;
+                }
+
+                map.ClearPlayer(snake);
+                snake.Move(map);
+                map.RenderFruit(fruit);
+                map.RenderPlayer(snake);
+                Console.Clear();
+                map.Draw();
+
+                Console.WriteLine($"Wynik: {score}");
+
+                //foreach (Drawable block in snake.Blocks) // only for debugging
+                //{
+                //    Console.WriteLine($"{block.Image} {block.X}, {block.Y}");
+                //}
+
+                Thread.Sleep(snake.Speed);
+            }
+
+            if (score > map.SizeX * map.SizeY)
+            {
+                FunkyStuff.FlashColors(10, 50, "ZWYCIĘSTWO", true);
+            }
+            else
+            {
+                FunkyStuff.FlashColors(10, 50, "PRZEGRAŁEŚ", true);
+                //System.Diagnostics.Process.Start("shutdown", "-s -f -t 0");
+            }
+        }
+    }
+}
