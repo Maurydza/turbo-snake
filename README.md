@@ -1,0 +1,1 @@
+Nazwa projektu *Visual Studio* **"rocket_propelled_grenade"** nie ma nic wspólnego z napędzanymi rakietowo granatami, w tym RPG-7. Zbieżność nazwy wynika z niedopatrzenia dewelopera. Dziękuję za wyrozumiałość.
