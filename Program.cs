@@ -2,15 +2,18 @@
 {
     internal class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
             Console.Title = "Snake";
+            Console.CursorVisible = false;
 
             FunkyStuff.BasicLoad(3, 50, "Ładowanie");
             FunkyStuff.FlashColors(10, 50, "ZAŁADOWANO", true);
 
             Random random = new();
             int score = 0;
+
+            ScreenBuffer buffer = new(40, 22);
 
             Map map = new(20, 20, "--");
             Player snake = new("Snake", 140, 2, "[]", 1, 0, true);
@@ -77,10 +80,12 @@
                 snake.Move(map);
                 map.RenderFruit(fruit);
                 map.RenderPlayer(snake);
-                Console.Clear();
-                map.Draw();
 
-                Console.WriteLine($"Wynik: {score}");
+
+                buffer.Clear();
+                map.Draw(buffer);
+                buffer.Push($"\nWynik: {score}");
+                buffer.Show();
 
                 //foreach (Drawable block in snake.Blocks) // only for debugging
                 //{

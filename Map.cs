@@ -26,15 +26,15 @@
             }
         }
         
-        public void Draw()
+        public void Draw(ScreenBuffer buffer)
         {
             for (int i = 0; i < SizeY; i++)
             {
                 for (int j = 0; j < SizeX; j++)
                 {
-                    Console.Write(MapFields[j, i].Image);
+                    buffer.Push(MapFields[j, i].Image);
                 }
-                Console.WriteLine();
+                buffer.Push("\n");
             }
         }
 
