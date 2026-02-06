@@ -16,7 +16,7 @@
             ScreenBuffer buffer = new(40, 22);
 
             Map map = new(20, 20, "--");
-            Player snake = new("Snake", 140, 2, "[]", 1, 0, true);
+            Player snake = new("Snake", 3, 2, "[]", 1, 0, true);
             Fruit fruit = new("db");
             
             map.CreateEmpty();
@@ -25,9 +25,12 @@
 
             map.RenderFruit(fruit);
 
+            DateTime frameStart;
+            float deltaTime;
 
             while (snake.IsAlive)
             {   
+                frameStart = DateTime.Now;
                 if (Console.KeyAvailable)
                 {
                     switch (Console.ReadKey().Key)
@@ -92,7 +95,9 @@
                 //    Console.WriteLine($"{block.Image} {block.X}, {block.Y}");
                 //}
 
-                Thread.Sleep(snake.Speed);
+                deltaTime = (float)(DateTime.Now - frameStart).TotalSeconds;
+
+                Thread.Sleep((int)(snake.Speed / deltaTime));
             }
 
             if (score > map.SizeX * map.SizeY)
